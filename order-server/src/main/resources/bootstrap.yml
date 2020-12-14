@@ -1,0 +1,27 @@
+#优先加载读取config的配置信息
+#eureka需配置在项目的bootstrap中，否则无法获取注册中心的config实列信息而导致项目启动失败
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: order  #加载的配置名称
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG #config注册中心name
+      profile: dev #加载的配置profiles = order-dev
+    stream:
+      bindings:
+        orderQueue:
+          group: order
+          content-type: application/json #使mq中的编码改为json格式，以便调试
+
+logging:
+  level:
+    org.springframework.cloud.bus: debug
